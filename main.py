@@ -7,7 +7,7 @@ import assets
 import argparse
 
 
-dev_mode = True
+dev_mode = False
 
 parser = argparse.ArgumentParser(description="Run bot in dev mode")
 parser.add_argument("--dev", action="store_true")
@@ -33,7 +33,7 @@ def get_prefix(bot, message):
 intents = discord.Intents.default()
 intents.members=True
 intents.guilds = True
-bot = commands.Bot(command_prefix="vdev!", case_insenstive=True, intents = intents)
+bot = commands.Bot(command_prefix="v!", case_insenstive=True, intents = intents)
 
 #removing default ping and help command
 bot.remove_command("ping")
@@ -73,7 +73,10 @@ async def on_guild_remove(guild):
 @bot.event
 async def on_ready():
     config = utilities.get_json(assets.config_file)
-    print(config["invite_url"])
+    #sanity
+    for guild in bot.guilds:
+        await on_guild_join(guild)
+        print(f"Added {guild.name} since it was not added yet. \n ")
 
 
 
